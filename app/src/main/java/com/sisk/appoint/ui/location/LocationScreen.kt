@@ -26,22 +26,27 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sisk.appoint.R
-import com.sisk.appoint.ui.AppointViewModel
+import com.sisk.appoint.viewmodel.BookingViewModel
 import com.sisk.appoint.ui.components.LocationSearch
+import com.sisk.appoint.ui.components.rememberSearchBarState
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun LocationScreen(viewModel: AppointViewModel) {
+fun LocationScreen(
+    viewModel: BookingViewModel = hiltViewModel(),
+    navigateToDateTime: () -> Unit = {},
+    onNavBack: () -> Unit = {}
+) {
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed,
         animationSpec = tween(300)
     )
-
     val state by viewModel.uiState.collectAsState()
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
@@ -79,26 +84,29 @@ fun LocationScreen(viewModel: AppointViewModel) {
                 onLocationSelected = {
                     viewModel.updateLocation(it)
                     coroutineScope.launch {
-
-
                         sheetState.collapse()
                     }
                 },
                 findLocation = {
                     viewModel.searchLocation(it)
-                }
+                },
+                searchBarState = rememberSearchBarState(
+                    suggestions = state.locationSuggestions
+                )
             )
         }
     ) {
         LazyColumn(modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 12.dp)){
+        ){
             item {
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
-                    Text(text = "Location", modifier = Modifier.padding(horizontal = 4.dp), style = MaterialTheme.typography.titleLarge)
+                    IconButton(onClick = onNavBack) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
+                    }
+                    Text(text = "Location", modifier = Modifier.padding(horizontal = 4.dp), style = MaterialTheme.typography.bodyLarge)
                 }
             }
 
@@ -107,9 +115,12 @@ fun LocationScreen(viewModel: AppointViewModel) {
             }
 
             item {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(278.dp), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(278.dp),
+                    contentAlignment = Alignment.Center
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.locate),
                         contentDescription = "",
@@ -123,7 +134,9 @@ fun LocationScreen(viewModel: AppointViewModel) {
             }
 
             item {
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)) {
 
                     Spacer(modifier = Modifier.height(8.dp))
                     // Text(text = "Step 1", style = MaterialTheme.typography.titleMedium)
@@ -136,11 +149,17 @@ fun LocationScreen(viewModel: AppointViewModel) {
                     }, style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(modifier = Modifier.fillMaxWidth(),onClick = { /*TODO*/ }) {
+                Button(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),onClick = {
+                    navigateToDateTime()
+                }) {
                     Text(text = "Yes")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                OutlinedButton(modifier = Modifier.fillMaxWidth(),onClick = {
+                OutlinedButton(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),onClick = {
                     coroutineScope.launch {
                         sheetState.expand()
                         focusRequester.requestFocus()
@@ -148,7 +167,9 @@ fun LocationScreen(viewModel: AppointViewModel) {
                 }) {
                     Text(text = "No")
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier
+                    .height(8.dp)
+                    .padding(horizontal = 8.dp))
                 Text(
                     text = "Please note suggested location is auto-detected based on current your location",
                     style = MaterialTheme.typography.labelMedium,
@@ -161,4 +182,10 @@ fun LocationScreen(viewModel: AppointViewModel) {
     }
 
 
+}
+
+@Preview
+@Composable
+fun LocationScreenPreview() {
+    LocationScreen()
 }

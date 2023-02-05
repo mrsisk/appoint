@@ -11,9 +11,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sisk.appoint.model.Info
 
 @Composable
-fun BannerCard() {
+fun BannerCard(
+    info: Info = Info()
+) {
     Card(modifier = Modifier
         .fillMaxWidth()
         .height(180.dp)
@@ -21,15 +24,20 @@ fun BannerCard() {
     ) {
        Row(
            modifier = Modifier
-           .fillMaxWidth()
-           .fillMaxHeight().padding(horizontal = 16.dp),
+               .fillMaxWidth()
+               .fillMaxHeight()
+               .padding(horizontal = 16.dp),
            verticalAlignment = Alignment.CenterVertically,
 
        ) {
            Column(modifier = Modifier.weight(1f)) {
-               Text(text = "Covid-19", style = MaterialTheme.typography.titleLarge)
+               Header(
+                   title = info.title,
+                   textStyle = MaterialTheme.typography.titleLarge,
+                   modifier = Modifier.padding()
+               )
                Text(
-                   text = "Protect yourself from Covid-19 the virus by washing your hands everyday",
+                   text = info.description,
                    style = MaterialTheme.typography.bodyMedium,
                    maxLines = 2,
                    overflow = TextOverflow.Ellipsis

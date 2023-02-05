@@ -22,12 +22,6 @@ fun LocationCard(onClick: ()-> Unit) {
               modifier = Modifier.fillMaxSize(),
               contentScale = ContentScale.Fit
           )
-           
-//           Text(
-//               text = "Looking for a health facility next to you?",
-//               textAlign = TextAlign.Center,
-//               modifier = Modifier.align(Alignment.TopCenter)
-//           )
        }
     }
 }

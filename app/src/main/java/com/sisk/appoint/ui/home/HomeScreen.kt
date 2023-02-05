@@ -8,50 +8,53 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.sisk.appoint.model.categories
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sisk.appoint.ui.components.*
+import com.sisk.appoint.viewmodel.HomeViewModel
 
 
 @Composable
-fun HomeScreen(navHostController: NavHostController) {
+fun HomeScreen(
+    onCategorySelected: (String) -> Unit = {},
+    viewHomeModel: HomeViewModel = viewModel()
+) {
+    val state by viewHomeModel.uiState.collectAsState()
 
     LazyColumn(modifier = Modifier.fillMaxWidth()){
-//        item {
-//            TopBar(user = User(username = "John sisk", email = "sisk@gmail.com", image = ""))
-//        }
 
         item {
             Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)) {
-                Text(
-                    text = "Health tip for the day",
-                    style = MaterialTheme.typography.titleLarge,
-
-                )
-                Text(text = "Learn more about health tips, and stay safe", style = MaterialTheme.typography.labelMedium)
+                Header(title = "Health tip for the day", modifier = Modifier)
+//                Header(
+//                    title = "Learn more about health tips, and stay safe",
+//                    textStyle = MaterialTheme.typography.bodyMedium,
+//                    modifier = Modifier
+//                )
             }
 
         }
 
         item {
-            BannerCard()
+            BannerCard(info = state.info)
         }
         item {
-            Text(
-                text = "Categories",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
-            )
+            Header(title = "Categories")
         }
         item {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(horizontal = 12.dp)){
-                items(categories){
-                    CategoryCard(it)
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp)
+            ){
+                items(state.categories){
+                    CategoryCard(it){id ->
+                        onCategorySelected(id)
+                    }
                 }
             }
         }
@@ -61,11 +64,7 @@ fun HomeScreen(navHostController: NavHostController) {
 
 
         item {
-            Text(
-                text = "Shortcuts",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
-            )
+            Header(title = "Shortcuts")
         }
         item {
             ActionCard(title = "SOS", description = "Call our emergency number to report to us", color = MaterialTheme.colorScheme.primary
@@ -91,24 +90,20 @@ fun HomeScreen(navHostController: NavHostController) {
         }
 
         item {
-            Text(
-                text = "Looking for a closest hospital?",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
-            )
+            Header(title = "Looking for a closest hospital?")
         }
 
         item {
-            LocationCard(){
-                navHostController.navigate("location")
+            LocationCard{
+                //TODO
             }
         }
 
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-  //  HomeScreen()
+    HomeScreen()
 }

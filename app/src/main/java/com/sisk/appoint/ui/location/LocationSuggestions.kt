@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +19,10 @@ import com.sisk.appoint.R
 import com.sisk.appoint.model.Location
 
 @Composable
-fun LocationSuggestions(suggestions: List<Location> = emptyList(), onLocationClick: (Location)-> Unit) {
+fun LocationSuggestions(
+    suggestions: List<Location> = emptyList(),
+    onLocationClick: (Location) -> Unit = {}
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth(),
@@ -33,7 +33,7 @@ fun LocationSuggestions(suggestions: List<Location> = emptyList(), onLocationCli
             Text(
                 text = "Popular Locations",
                 modifier = Modifier.padding(horizontal = 4.dp),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.bodyLarge
             )
         }
 
@@ -74,7 +74,7 @@ fun SuggestionItem(location: Location) {
         }
 
 
-        Text(text = location.name, modifier = Modifier.padding(horizontal = 4.dp), style = MaterialTheme.typography.bodyLarge)
+        Text(text = location.name, modifier = Modifier.padding(horizontal = 4.dp), style = MaterialTheme.typography.bodyMedium)
 
     }
 }
@@ -82,5 +82,5 @@ fun SuggestionItem(location: Location) {
 @Preview(showBackground = true)
 @Composable
 fun LocationSuggestionsPreview() {
-    LocationSuggestions(suggestions = listOf(Location("Mbabane Government", longitude = 0.0, latitude = 0.0)), {})
+    LocationSuggestions(suggestions = listOf(Location("Mbabane Government", longitude = 0.0, latitude = 0.0)))
 }

@@ -1,6 +1,7 @@
 package com.sisk.appoint.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -17,8 +18,14 @@ import com.sisk.appoint.R
 import com.sisk.appoint.model.Category
 
 @Composable
-fun CategoryCard(category: Category) {
-    Card(modifier = Modifier.size(height = 150.dp, width = 120.dp)) {
+fun CategoryCard(category: Category, onClick: (String) -> Unit = {}) {
+    Card(
+        modifier = Modifier
+            .size(height = 150.dp, width = 120.dp)
+            .clickable {
+                onClick(category.title)
+            }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -47,5 +54,5 @@ fun CategoryCard(category: Category) {
 @Preview
 @Composable
 fun CategoryCardPreview() {
-    CategoryCard(Category("Specialist", image = R.drawable.heart))
+    CategoryCard(Category(title = "Specialist", image = R.drawable.heart))
 }

@@ -21,7 +21,9 @@ import com.sisk.appoint.navigation.bottomBarScreens
 import com.sisk.appoint.ui.components.BottomNavigation
 import com.sisk.appoint.ui.components.TopBar
 import com.sisk.appoint.ui.theme.AppointTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {

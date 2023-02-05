@@ -1,12 +1,7 @@
 package com.sisk.appoint.model
 
 import com.sisk.appoint.R
+import java.util.UUID
 
-data class Category(val title: String, val image: Int)
+data class Category(val id: String = UUID.randomUUID().toString() ,val title: String, val image: Int)
 
-val categories = listOf<Category>(
-    Category("Heart specialist", image = R.drawable.heart),
-    Category("Dentist", image = R.drawable.tooth),
-    Category("Eyes specialist", R.drawable.eye),
-    Category("Maternity", R.drawable.heart)
-)

@@ -7,35 +7,52 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.sisk.appoint.ui.AppointViewModel
 import com.sisk.appoint.ui.account.AccountScreen
 import com.sisk.appoint.ui.home.HomeScreen
 import com.sisk.appoint.ui.location.LocationScreen
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sisk.appoint.ui.datetime.DateTimeScreen
 
 
 @Composable
 fun AppointmentNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: AppointViewModel = viewModel()
 ) {
     NavHost(navController = navController, startDestination = "home", modifier = modifier){
         composable("home"){
-           HomeScreen(navController)
+           HomeScreen(
+               onCategorySelected = {
+                   navController.navigate("booking")
+               }
+           )
 
         }
-        bookingGraph(navController, viewModel)
+        bookingGraph(navController)
         composable("account"){
             AccountScreen()
         }
     }
 }
 
-fun NavGraphBuilder.bookingGraph(navController: NavHostController, viewModel: AppointViewModel){
+fun NavGraphBuilder.bookingGraph(navController: NavHostController){
     navigation(startDestination = "location", route = "booking"){
         composable("location"){
-            LocationScreen(viewModel)
+            LocationScreen(
+                navigateToDateTime = {
+                    navController.navigate("dateTime")
+                },
+                onNavBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("dateTime"){
+            DateTimeScreen(
+                onNavBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

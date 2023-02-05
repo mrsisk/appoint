@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -18,8 +19,8 @@ import com.sisk.appoint.ui.location.LocationSuggestions
 
 @Composable
 fun LocationSearch(
-    height: Dp = 100.dp,
-    onBackPressed: () -> Unit,
+    height: Dp = LocalConfiguration.current.screenHeightDp.dp,
+    onBackPressed: () -> Unit = {},
     findLocation: suspend (String) -> List<Location> = { emptyList() },
     onLocationSelected: (Location) -> Unit ={},
     searchBarState: SearchBarState = rememberSearchBarState(),
@@ -63,7 +64,7 @@ fun LocationSearch(
                 focusManager.clearFocus(true)
                 onLocationSelected(it)
             }
-            LocationSearchDisplay.Suggestions -> LocationSuggestions(suggestions = listOf(Location(name = "Mbabane Government", longitude = 0.0, latitude = 0.0))) {
+            LocationSearchDisplay.Suggestions -> LocationSuggestions(suggestions = searchBarState.suggestions) {
                 focusManager.clearFocus(true)
                 onLocationSelected(it)
             }
@@ -77,11 +78,13 @@ class SearchBarState(
     focused: Boolean,
     query: TextFieldValue,
     searchResults: List<Location>,
+    suggestions: List<Location>,
     isSearching: Boolean
 ){
     var focused by mutableStateOf(focused)
     var query by mutableStateOf(query)
     var searchResults by mutableStateOf(searchResults)
+    var suggestions by mutableStateOf(suggestions)
     var isSearching by mutableStateOf(isSearching)
     val searchDisplay: LocationSearchDisplay
     get() = when{
@@ -96,13 +99,15 @@ fun rememberSearchBarState(
     query: TextFieldValue = TextFieldValue(""),
     focused: Boolean = false,
     searchResults: List<Location> = emptyList(),
-    isSearching: Boolean = false
+    isSearching: Boolean = false,
+    suggestions: List<Location> = emptyList()
 ): SearchBarState = remember {
     SearchBarState(
         focused = focused,
         query = query,
         searchResults = searchResults,
-        isSearching = isSearching
+        isSearching = isSearching,
+        suggestions = suggestions
     )
 }
 
@@ -112,8 +117,8 @@ sealed class LocationSearchDisplay{
     object  Results: LocationSearchDisplay()
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LocationSearchPreview() {
-    //LocationSearch()
+    LocationSearch()
 }
