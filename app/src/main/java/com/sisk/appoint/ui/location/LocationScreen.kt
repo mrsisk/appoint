@@ -106,7 +106,7 @@ fun LocationScreen(
                     IconButton(onClick = onNavBack) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
                     }
-                    Text(text = "Location", modifier = Modifier.padding(horizontal = 4.dp), style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Location", modifier = Modifier.padding(horizontal = 4.dp), style = MaterialTheme.typography.titleMedium)
                 }
             }
 

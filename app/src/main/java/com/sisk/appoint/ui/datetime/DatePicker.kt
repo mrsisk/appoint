@@ -9,16 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sisk.appoint.model.AppointDateTime
+import com.sisk.appoint.model.AppointDate
 
 @Composable
-fun DatePicker(dateTime: List<AppointDateTime>, selectedAppointDateTime: AppointDateTime, onDateSelected: (AppointDateTime) -> Unit) {
+fun DatePicker(days: List<AppointDate>, selectedAppointDate: AppointDate, onDateSelected: (AppointDate) -> Unit) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 10.dp).fillMaxWidth()
     ){
-        items(dateTime){
-            DateCard(selected = it == selectedAppointDateTime, it){date ->
+        items(days){
+            DateCard(selected = it == selectedAppointDate, it){ date ->
                 onDateSelected(date)
             }
         }

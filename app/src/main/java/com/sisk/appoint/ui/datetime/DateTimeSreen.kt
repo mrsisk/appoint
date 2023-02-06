@@ -37,36 +37,48 @@ fun DateTimeScreen(
                     IconButton(onClick = onNavBack) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
                     }
-                    Text(text = "Date and time", style = MaterialTheme.typography.bodyLarge)
+                    Text(text = "Date and time", style = MaterialTheme.typography.titleMedium)
                 }
             }
 
             item {
                 Text(
                     text = "Appointment date",
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
                 )
             }
             item {
-                DatePicker(state.dateTime, selectedAppointDateTime = state.appointDateTime){
+                DatePicker(state.days, selectedAppointDate = state.appointDate){
                     viewModel.updateAppointDate(it)
                 }
             }
 
-            item {
-                Text(
-                    text = "Appointment time",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)
-                )
-            }
 
-            item {
-                TimePicker()
-            }
+        item {
+            TimeComponent(
+                heading = "Morning",
+                periods = state.morningPeriods,
+                selectedPeriod = state.appointPeriod,
+                onTimeClick = {
+                    viewModel.updateAppointPeriod(it)
+                }
+            )
+        }
 
-            item {
+        item {
+            TimeComponent(
+                heading = "Afternoon",
+                periods = state.afternoonPeriods,
+                selectedPeriod = state.appointPeriod,
+                onTimeClick = {
+                    viewModel.updateAppointPeriod(it)
+                }
+            )
+        }
+
+
+        item {
                 Text(
                     text = "Additional information (optional)",
                     style = MaterialTheme.typography.bodyLarge,

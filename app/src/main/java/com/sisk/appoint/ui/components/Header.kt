@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Header(
     title: String = "Title",
-    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
+    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     modifier: Modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
 ) {
     Text(

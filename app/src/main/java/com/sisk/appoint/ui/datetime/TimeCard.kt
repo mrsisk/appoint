@@ -1,41 +1,49 @@
 package com.sisk.appoint.ui.datetime
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sisk.appoint.model.Period
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimeCard(selected: Boolean = false) {
+fun TimeCard(
+    selected: Boolean = false,
+    period: Period = Period(),
+    onTimeClick: (Period) -> Unit = {}
+) {
     Surface(
-        shape = RoundedCornerShape(10.dp),
-        color = if (selected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
-        modifier = Modifier
-            .wrapContentWidth(),
+        shape = RoundedCornerShape(6.dp),
+        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
         tonalElevation = 4.dp,
-        shadowElevation = 6.dp
+        shadowElevation = 4.dp,
+        onClick = {
+            onTimeClick(period)
+        }
 
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .padding(12.dp)
+                .padding(horizontal = 18.dp, vertical = 8.dp)
+
+
         ) {
-            Text(text = "09:00 AM", textAlign = TextAlign.Center)
+            Text(text = period.start)
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun TimeCardPreview() {
     TimeCard()
