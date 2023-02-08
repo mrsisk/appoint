@@ -13,6 +13,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sisk.appoint.ui.components.ToolBar
 import com.sisk.appoint.viewmodel.BookingViewModel
 
 
@@ -20,7 +21,8 @@ import com.sisk.appoint.viewmodel.BookingViewModel
 @Composable
 fun DateTimeScreen(
     viewModel: BookingViewModel = hiltViewModel(),
-    onNavBack: () -> Unit = {}
+    onNavBack: () -> Unit = {},
+    onNavigateToReview: () -> Unit = {}
 ) {
     val state  by viewModel.uiState.collectAsState()
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
@@ -28,18 +30,14 @@ fun DateTimeScreen(
     }
 
     LazyColumn{
-            item {
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = onNavBack) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
-                    }
-                    Text(text = "Date and time", style = MaterialTheme.typography.titleMedium)
-                }
-            }
+
+        item {
+            ToolBar(
+                title = "Date and time",
+                stage = "2/3",
+                onNavBack = onNavBack
+            )
+        }
 
             item {
                 Text(
@@ -104,7 +102,7 @@ fun DateTimeScreen(
             item {
                 Button(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 12.dp), onClick = { /*TODO*/ }) {
+                    .padding(horizontal = 8.dp, vertical = 12.dp), onClick = onNavigateToReview) {
                     Text(text = "Proceed")
             }
         }

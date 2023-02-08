@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.sisk.appoint.R
 import com.sisk.appoint.viewmodel.BookingViewModel
 import com.sisk.appoint.ui.components.LocationSearch
+import com.sisk.appoint.ui.components.ToolBar
 import com.sisk.appoint.ui.components.rememberSearchBarState
 import kotlinx.coroutines.launch
 
@@ -100,14 +101,11 @@ fun LocationScreen(
             .fillMaxSize()
         ){
             item {
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp), verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = onNavBack) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
-                    }
-                    Text(text = "Location", modifier = Modifier.padding(horizontal = 4.dp), style = MaterialTheme.typography.titleMedium)
-                }
+                ToolBar(
+                    title = "Location",
+                    stage = "1/3",
+                    onNavBack = onNavBack
+                )
             }
 
             item {

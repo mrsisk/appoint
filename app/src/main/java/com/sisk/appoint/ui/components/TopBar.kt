@@ -50,7 +50,9 @@ fun TopBar(
                 contentDescription = "Localized description"
             )
         }
-    }, scrollBehavior = scrollBehavior)
+    },
+        scrollBehavior = scrollBehavior
+    )
 
 }
 

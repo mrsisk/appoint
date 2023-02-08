@@ -31,11 +31,7 @@ fun HomeScreen(
         item {
             Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)) {
                 Header(title = "Health tip for the day", modifier = Modifier)
-//                Header(
-//                    title = "Learn more about health tips, and stay safe",
-//                    textStyle = MaterialTheme.typography.bodyMedium,
-//                    modifier = Modifier
-//                )
+
             }
 
         }

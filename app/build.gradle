@@ -83,5 +83,12 @@ dependencies {
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
     implementation "com.google.accompanist:accompanist-flowlayout:0.29.1-alpha"
+
+    //lottie
+    implementation "com.airbnb.android:lottie-compose:5.2.0"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+
 }
 
