@@ -13,21 +13,15 @@ import com.sisk.appoint.ui.auth.*
 fun NavGraphBuilder.authNavGraph(navHostController: NavHostController){
     navigation(route = Graph.AUTH, startDestination = Authentication.route){
 
-        composable(route = Authentication.route){navBackStackEntry ->
-            val parentEntry = remember(navBackStackEntry) {
-                navHostController.getBackStackEntry(Authentication.route)
-            }
-            val authViewModel = hiltViewModel<AuthenticationViewModel>(parentEntry)
+        composable(route = Authentication.route){
             AuthScreen(
-                viewModel = authViewModel,
                 onSelectOption = {
                     when(it){
                         AuthenticationMode.SIGN_UP -> {
-                            authViewModel.setAuthMode(it)
                             navHostController.navigate(Register.route)
                         }
                         AuthenticationMode.SIGN_IN -> {
-                            authViewModel.setAuthMode(it)
+
                             navHostController.navigate(SignIn.route)
                         }
                     }
@@ -40,8 +34,8 @@ fun NavGraphBuilder.authNavGraph(navHostController: NavHostController){
             val parentEntry = remember(navBackStackEntry) {
                 navHostController.getBackStackEntry(Authentication.route)
             }
-            val authViewModel = hiltViewModel<AuthenticationViewModel>(parentEntry)
-            SignInScreen(viewModel = authViewModel){
+            val authViewModel = hiltViewModel<LogInViewModel>(parentEntry)
+            LogInScreen(viewModel = authViewModel){
                 navHostController.navigate(Graph.HOME){
                     popUpTo(Graph.AUTH){inclusive = true}
                 }
@@ -52,12 +46,12 @@ fun NavGraphBuilder.authNavGraph(navHostController: NavHostController){
             val parentEntry = remember(navBackStackEntry) {
                 navHostController.getBackStackEntry(Authentication.route)
             }
-            val authViewModel = hiltViewModel<AuthenticationViewModel>(parentEntry)
-            SignUpScreen(
+            val authViewModel = hiltViewModel<RegistrationViewModel>(parentEntry)
+            RegistrationScreen(
                 viewModel = authViewModel
             ){
-                navHostController.navigate(Graph.HOME){
-                    popUpTo(Graph.AUTH){inclusive = true}
+                navHostController.navigate(SignIn.route){
+                    popUpTo(Register.route){inclusive = true}
                 }
             }
         }

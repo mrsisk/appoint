@@ -13,5 +13,7 @@ interface AppointRepository {
     val workingDays: Flow<List<AppointDate>>
 
     val workingPeriods: Flow<Map<String, List<Period>>>
+
+    suspend fun test()
 }
 

@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sisk.appoint.ui.components.ToolBar
-import com.sisk.appoint.viewmodel.BookingViewModel
+import com.sisk.appoint.ui.viewmodel.BookingViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)

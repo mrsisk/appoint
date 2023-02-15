@@ -15,7 +15,7 @@ import com.sisk.appoint.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthScreen(viewModel: AuthenticationViewModel = hiltViewModel(),onSelectOption: (AuthenticationMode) -> Unit = {}) {
+fun AuthScreen(onSelectOption: (AuthenticationMode) -> Unit = {}) {
     Scaffold {innerPadding ->
         Column(
             modifier = Modifier

@@ -2,6 +2,7 @@ package com.sisk.appoint.ui.auth
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -10,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,19 +19,29 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.*
 import com.sisk.appoint.R
+import kotlinx.coroutines.flow.receiveAsFlow
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(
-    viewModel: AuthenticationViewModel = hiltViewModel(),
-    onClick: () -> Unit = {}
+fun LogInScreen(
+    viewModel: LogInViewModel = hiltViewModel(),
+    navigate: () -> Unit = {}
 ) {
+
     val state by viewModel.authState.collectAsState()
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     val loader by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.ap_loading))
     val progress by animateLottieCompositionAsState(composition = loader, iterations = LottieConstants.IterateForever)
 
-    Scaffold { innerPadding ->
+    val snackBarHostState = remember{ SnackbarHostState()}
+
+    LaunchedEffect(key1 = viewModel.channel){
+        viewModel.channel.receiveAsFlow().collect{
+            snackBarHostState.showSnackbar(message = it)
+        }
+    }
+    Scaffold(snackbarHost = {SnackbarHost(hostState = snackBarHostState)}) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -40,9 +52,9 @@ fun SignUpScreen(
         {
 
             Column(modifier = Modifier.padding(vertical = 24.dp)) {
-                Text(text = "Let's create an account", style = MaterialTheme.typography.displaySmall)
+                Text(text = "Lets sign you in", style = MaterialTheme.typography.displaySmall)
                 Text(
-                    text = "This should take few minutes",
+                    text = "Welcome back, You've been missed!",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
@@ -89,35 +101,45 @@ fun SignUpScreen(
                 )
 
                 Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    enabled = !state.loading,
+                    modifier = Modifier.fillMaxWidth().height(40.dp),
                     onClick = {
                         viewModel.authenticate{
-                            onClick()
+                            if(it){
+                                navigate()
+                            }
+
                         }
-                    }
+                    },
+                    enabled = !state.loading
                 ) {
-
-                   if (state.loading) LottieAnimation(
-                       composition = loader,
-                       progress = { progress },
-                       contentScale = ContentScale.Crop,
-                       modifier = Modifier.size(70.dp)
-                   ) else Text(text = "Register")
-
+                    if (state.loading) LottieAnimation(
+                        composition = loader,
+                        progress = { progress },
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(70.dp)
+                    ) else  Text(text = "Sign in")
                 }
 
+
+                Text(text = "or")
+
+                ClickableText(
+
+                    text = AnnotatedString("Forgot password?"),
+                    onClick = {
+
+                    }
+                )
             }
 
         }
 
     }
+
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun SignUpScreenPreview() {
-    SignUpScreen()
+fun SignInScreenPreview() {
+    LogInScreen()
 }

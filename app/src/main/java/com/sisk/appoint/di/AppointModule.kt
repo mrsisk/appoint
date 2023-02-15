@@ -1,4 +1,4 @@
-package com.sisk.appoint.data.di
+package com.sisk.appoint.di
 
 import com.sisk.appoint.data.AppointRepository
 import com.sisk.appoint.data.AppointRepositoryImpl
@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface AppointModule {
+abstract class AppointModule {
     @Binds
-    fun bindAppointRepository(appointRepositoryImpl: AppointRepositoryImpl): AppointRepository
+    abstract fun bindAppointRepository(appointRepositoryImpl: AppointRepositoryImpl): AppointRepository
 }

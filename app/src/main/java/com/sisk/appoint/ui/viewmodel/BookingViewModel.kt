@@ -1,4 +1,4 @@
-package com.sisk.appoint.viewmodel
+package com.sisk.appoint.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,6 +21,7 @@ class BookingViewModel @Inject constructor(private val appointRepository: Appoin
 
     init {
         viewModelScope.launch {
+            appointRepository.test()
             appointRepository.suggestions.collect { suggestions ->
                 _uiState.update {
                     it.copy(locationSuggestions = suggestions)
