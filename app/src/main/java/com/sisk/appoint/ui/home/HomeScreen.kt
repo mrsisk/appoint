@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sisk.appoint.navigation.AppointDestinations
 import com.sisk.appoint.ui.components.*
 import com.sisk.appoint.ui.viewmodel.HomeViewModel
 
@@ -23,9 +25,10 @@ import com.sisk.appoint.ui.viewmodel.HomeViewModel
 @Composable
 fun HomeScreen(
     onCategorySelected: (String) -> Unit = {},
-    viewHomeModel: HomeViewModel = hiltViewModel()
+    viewHomeModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewHomeModel.uiState.collectAsState()
+
 
     LazyColumn(modifier = Modifier.fillMaxWidth()){
 

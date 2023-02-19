@@ -6,10 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.sisk.appoint.data.AuthRepository
 import com.sisk.appoint.data.TokenRepository
-import com.sisk.appoint.network.AppointMainApi
-import com.sisk.appoint.network.AppointAuthApi
-import com.sisk.appoint.network.AppointAuthenticator
-import com.sisk.appoint.network.AppointInterceptor
+import com.sisk.appoint.network.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +14,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.Retrofit.Builder
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -58,6 +57,12 @@ object NetworkModule {
         .client(client)
         .build()
         .create(AppointMainApi::class.java)
+    @Provides
+    @Singleton
+    fun provideUserApi(retrofit: Builder,@MainInterceptor client: OkHttpClient): UserApi = retrofit
+        .client(client)
+        .build()
+        .create(UserApi::class.java)
 
     @Provides
     @Singleton

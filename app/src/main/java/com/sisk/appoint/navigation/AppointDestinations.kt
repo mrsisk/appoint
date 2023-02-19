@@ -16,6 +16,8 @@ sealed class AppointDestinations(val title: String, val route: String, val icon:
     object SignIn: AppointDestinations("SignIn", route = "signIn")
 
     object Register: AppointDestinations("Register", route = "register")
+
+    object ProfileRegistration: AppointDestinations("Profile", "profile_reg")
 }
 
 val bottomBarScreens = listOf(AppointDestinations.Home, AppointDestinations.Account)
@@ -24,4 +26,5 @@ object Graph{
     const val AUTH = "auth_graph"
     const val HOME = "home_graph"
     const val ROOT = "root"
+    const val SWITCH = "switch"
 }

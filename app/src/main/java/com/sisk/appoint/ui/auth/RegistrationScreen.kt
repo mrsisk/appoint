@@ -3,6 +3,7 @@ package com.sisk.appoint.ui.auth
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -84,6 +86,7 @@ fun RegistrationScreen(
                         viewModel.onPasswordChange(it)
                     },
                     placeholder = { Text(text = "Password") },
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                     visualTransformation = if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
                     trailingIcon = {
                         IconButton(onClick = { passwordHidden = !passwordHidden }) {

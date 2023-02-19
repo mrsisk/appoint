@@ -18,10 +18,13 @@ fun HomeNavGraph(navHostController: NavHostController, modifier: Modifier){
     ){
         composable(AppointDestinations.Home.route){
             HomeScreen()
+
         }
 
         composable(AppointDestinations.Account.route){
             AccountScreen()
         }
+
+
     }
 }

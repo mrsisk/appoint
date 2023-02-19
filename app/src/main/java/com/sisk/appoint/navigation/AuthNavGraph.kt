@@ -9,11 +9,11 @@ import androidx.navigation.navigation
 import com.sisk.appoint.navigation.AppointDestinations.*
 import com.sisk.appoint.ui.auth.*
 
-
 fun NavGraphBuilder.authNavGraph(navHostController: NavHostController){
     navigation(route = Graph.AUTH, startDestination = Authentication.route){
 
         composable(route = Authentication.route){
+
             AuthScreen(
                 onSelectOption = {
                     when(it){
@@ -27,6 +27,7 @@ fun NavGraphBuilder.authNavGraph(navHostController: NavHostController){
                     }
                 }
             )
+
         }
 
         composable(route = SignIn.route){navBackStackEntry ->
@@ -36,7 +37,7 @@ fun NavGraphBuilder.authNavGraph(navHostController: NavHostController){
             }
             val authViewModel = hiltViewModel<LogInViewModel>(parentEntry)
             LogInScreen(viewModel = authViewModel){
-                navHostController.navigate(Graph.HOME){
+                navHostController.navigate(Graph.SWITCH){
                     popUpTo(Graph.AUTH){inclusive = true}
                 }
             }
