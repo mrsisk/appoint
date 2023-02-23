@@ -1,4 +1,4 @@
-package com.sisk.appoint.ui.viewmodel
+package com.sisk.appoint.ui.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -20,7 +20,6 @@ class HomeViewModel @Inject constructor(
     private val appointRepository: AppointRepository,
     private val userRepository: UserRepository
 ): ViewModel() {
-
 
     private val _uiState = MutableStateFlow(
         AppointAppState(

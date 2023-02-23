@@ -22,26 +22,6 @@ import com.sisk.appoint.R
 @Composable
 fun AuthScreen(onSelectOption: (AuthenticationMode) -> Unit = {}, lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current) {
 
-//    DisposableEffect(key1 = lifecycleOwner){
-//        val observer = LifecycleEventObserver{_, event ->
-//            when(event){
-//                Lifecycle.Event.ON_CREATE -> Log.d("mama s", "onCreate")
-//                Lifecycle.Event.ON_START -> Log.d("mama s", "onStart")
-//                Lifecycle.Event.ON_RESUME -> Log.d("mama s", "onResume")
-//                Lifecycle.Event.ON_PAUSE -> Log.d("mama s", "onPause")
-//                Lifecycle.Event.ON_STOP -> Log.d("mama s", "onStop")
-//                Lifecycle.Event.ON_DESTROY -> Log.d("mama s", "onDestroy")
-//                Lifecycle.Event.ON_ANY -> Log.d("mama s", "ANY")
-//            }
-//
-//        }
-//        lifecycleOwner.lifecycle.addObserver(observer)
-//
-//        // When the effect leaves the Composition, remove the observer
-//        onDispose {
-//            lifecycleOwner.lifecycle.removeObserver(observer)
-//        }
-//    }
     Scaffold {innerPadding ->
         Column(
             modifier = Modifier

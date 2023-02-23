@@ -1,4 +1,4 @@
-package com.sisk.appoint.ui.viewmodel
+package com.sisk.appoint.ui.home
 
 import com.sisk.appoint.model.AppointUser
 import com.sisk.appoint.model.Category

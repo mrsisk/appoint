@@ -1,5 +1,6 @@
 package com.sisk.appoint.network
 
+import android.util.Log
 import com.sisk.appoint.data.TokenRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -19,6 +20,8 @@ class AppointInterceptor @Inject constructor(private val tokenRepository: TokenR
         if (token != null){
             request.addHeader("Authorization", "Bearer $token")
         }
+
+
 
         return chain.proceed(request.build())
     }

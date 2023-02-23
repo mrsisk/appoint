@@ -1,5 +1,6 @@
 package com.sisk.appoint.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sisk.appoint.data.AppointRepository
@@ -28,12 +29,14 @@ class BookingViewModel @Inject constructor(private val appointRepository: Appoin
                 }
             }
             appointRepository.workingDays.collect{days ->
+                Log.d("mama", "working days $days" )
                 _uiState.update {
                     it.copy(days = days, appointDate = days.first())
                 }
             }
 
             appointRepository.workingPeriods.collect{periods ->
+                Log.d("mama", "working period $periods" )
                 val morning = periods["Morning"] ?: emptyList()
                 val afternoon = periods["Afternoon"] ?: emptyList()
                 _uiState.update {

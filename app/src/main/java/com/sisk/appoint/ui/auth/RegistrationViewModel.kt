@@ -29,7 +29,7 @@ class RegistrationViewModel @Inject constructor(private val authRepository: Auth
        val password = _authState.value.password ?: return
       viewModelScope.launch {
 
-          val result = authRepository.register(AuthRequest(email = email, password = password))
+          val result = authRepository.register(AuthRequest(email = email.trim(), password = password))
           result.collect{response ->
               when(response){
                   is AppointResponse.Error -> {

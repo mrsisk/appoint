@@ -7,11 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -42,7 +39,7 @@ import kotlinx.coroutines.launch
 fun LocationScreen(
     viewModel: BookingViewModel = hiltViewModel(),
     navigateToDateTime: () -> Unit = {},
-    onNavBack: () -> Unit = {}
+    onNavBack: () -> Unit = {},
 ) {
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed,
@@ -51,7 +48,7 @@ fun LocationScreen(
     val state by viewModel.uiState.collectAsState()
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
-    val height = LocalConfiguration.current.screenHeightDp.dp
+    val height = (LocalConfiguration.current.screenHeightDp).dp
     val coroutineScope = rememberCoroutineScope()
     val focusRequester = FocusRequester()
     BackHandler(enabled = sheetState.isExpanded) {
@@ -59,6 +56,7 @@ fun LocationScreen(
             sheetState.collapse()
         }
     }
+
 
 
     BottomSheetScaffold(
@@ -74,6 +72,7 @@ fun LocationScreen(
             topEnd = 20.dp
         ),
         sheetContent = {
+
             LocationSearch(
                 height = height,
                 onBackPressed = {
@@ -98,6 +97,7 @@ fun LocationScreen(
         }
     ) {
         LazyColumn(modifier = Modifier
+            .statusBarsPadding()
             .fillMaxSize()
         ){
             item {

@@ -20,7 +20,6 @@ import com.sisk.appoint.navigation.bottomBarScreens
 import com.sisk.appoint.ui.components.BottomNav
 import com.sisk.appoint.ui.components.LoadingScreen
 import com.sisk.appoint.ui.components.TopBar
-import com.sisk.appoint.ui.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +27,8 @@ fun HomeScaffold(
     navHostController: NavHostController = rememberNavController(),
     viewHomeModel: HomeViewModel = hiltViewModel(),
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onNavigate: () -> Unit = {}
+    onNavigate: () -> Unit = {},
+    navigateToBooking: () -> Unit = {},
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         rememberTopAppBarState()
@@ -77,20 +77,21 @@ fun HomeScaffold(
                 }
             },
             topBar = {
-                if (currentDestination == "home") {
+               // if (currentDestination == "home") {
                     TopBar(
                         user = User(
-                            username = "John sisk",
+                            username = "John Sisk",
                             email = "sisk@gmail.com",
                             image = ""
                         ), scrollBehavior = scrollBehavior
                     )
-                }
+               // }
             }
         ) { innerPadding ->
             HomeNavGraph(
                 navHostController = navHostController,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                navigateToBooking = navigateToBooking
             )
         }
     }

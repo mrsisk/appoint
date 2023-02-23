@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.sisk.appoint.ui.auth.ProfileRegistrationScreen
+import com.sisk.appoint.ui.booking.BookingScaffold
 import com.sisk.appoint.ui.home.HomeScaffold
 import com.sisk.appoint.ui.swith.Switch
 
@@ -28,15 +29,25 @@ fun RootNavigationGraph(
 
 
         composable(route = Graph.HOME){
-            HomeScaffold {
+            HomeScaffold(onNavigate = {
                 navHostController.navigate(Graph.AUTH){
                     popUpTo(Graph.HOME){inclusive = true}
                 }
-            }
+            },
+            navigateToBooking = {
+                navHostController.navigate(Graph.BOOKING)
+            })
         }
 
+        composable(route = Graph.BOOKING){
+            BookingScaffold()
+        }
         composable(route = AppointDestinations.ProfileRegistration.route){
-            ProfileRegistrationScreen()
+            ProfileRegistrationScreen{
+                navHostController.navigate(Graph.SWITCH){
+                    popUpTo(AppointDestinations.ProfileRegistration.route){inclusive = true}
+                }
+            }
         }
     }
 }

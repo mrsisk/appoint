@@ -9,7 +9,7 @@ import com.sisk.appoint.ui.account.AccountScreen
 import com.sisk.appoint.ui.home.HomeScreen
 
 @Composable
-fun HomeNavGraph(navHostController: NavHostController, modifier: Modifier){
+fun HomeNavGraph(navHostController: NavHostController, modifier: Modifier, navigateToBooking: ()-> Unit = {}){
     NavHost(
         navController = navHostController,
         route = Graph.HOME,
@@ -17,7 +17,11 @@ fun HomeNavGraph(navHostController: NavHostController, modifier: Modifier){
         modifier = modifier
     ){
         composable(AppointDestinations.Home.route){
-            HomeScreen()
+
+
+            HomeScreen(onCategorySelected = {
+                navigateToBooking()
+            })
 
         }
 

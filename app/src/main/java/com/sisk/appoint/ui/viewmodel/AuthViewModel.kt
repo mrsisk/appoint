@@ -35,6 +35,7 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
 
             userRepository.userinfo()
                 .catch { error ->
+                    Log.d("mama", "auth viemodel errro ${error.message}")
                     when(error){
                         is SocketTimeoutException -> {
                             _authState.update {

@@ -35,7 +35,7 @@ class LogInViewModel @Inject constructor(
         val email = _authState.value.email ?: return
         val password = _authState.value.password ?: return
         viewModelScope.launch {
-            val result = authRepository.authenticate(AuthRequest(email = email, password = password))
+            val result = authRepository.authenticate(AuthRequest(email = email.trim(), password = password))
             result.collect{response ->
                 when(response){
                     is AppointResponse.Error -> {

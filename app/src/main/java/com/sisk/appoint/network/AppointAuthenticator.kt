@@ -1,5 +1,6 @@
 package com.sisk.appoint.network
 
+import android.util.Log
 import com.sisk.appoint.data.TokenRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -12,6 +13,7 @@ import javax.inject.Inject
 class AppointAuthenticator @Inject constructor(private val tokenRepository: TokenRepository): Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
+
 
         if (!containsAccessToken(response)) return null
 
