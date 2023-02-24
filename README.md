@@ -17,3 +17,9 @@ Application use dynamic theming,  enables users to personalize their devices to 
 
 <img src="screenshots/booking_step_1.png" width="250"/> <img src="screenshots/booking_location_search.png" width="250"/> <img src="screenshots/booking_date_time.png" width="250"/>
 
+## Techstack
+ - [Kotlin](https://developer.android.com/kotlin) - Kotlin is a programming language has first class support from Google for developing android applications
+ - [Jetpack Compose](https://developer.android.com/jetpack/compose) - Jetpack Compose is Android’s recommended modern toolkit for building native UI
+ - [Dagger Hilt](https://developer.android.com/training/dependency-injection/hilt-android) - A dependency injection library for Android that reduces the boilerplate of doing manual dependency injection in your project.
+ - [Lottie](http://airbnb.io/lottie/#/) -  Lottie is a JSON-based animation file format that allows you to ship animations on different platforms
+ - [Retrofit](https://square.github.io/retrofit) - 
