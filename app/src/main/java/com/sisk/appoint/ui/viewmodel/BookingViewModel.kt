@@ -4,16 +4,20 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sisk.appoint.data.AppointRepository
-import com.sisk.appoint.model.AppointDate
-import com.sisk.appoint.model.Location
-import com.sisk.appoint.model.Period
+import com.sisk.appoint.data.ScheduleRepository
+import com.sisk.appoint.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
-class BookingViewModel @Inject constructor(private val appointRepository: AppointRepository): ViewModel() {
+class BookingViewModel @Inject constructor(
+    private val appointRepository: AppointRepository,
+    private val scheduleRepository: ScheduleRepository
+): ViewModel() {
     //app state Location
 
 
@@ -22,27 +26,29 @@ class BookingViewModel @Inject constructor(private val appointRepository: Appoin
 
     init {
         viewModelScope.launch {
-            appointRepository.test()
+            scheduleRepository.getSchedule()
+                .catch {
+                    Log.d("mama", "booking repo ${it.message}")
+                }
+                .collect{schedules ->
+                    Log.d("mama", "booking repo got $schedules")
+                    _uiState.update {
+                        it.copy(
+                            schedules = schedules.map { wd -> wd.toUiModel() },
+                            schedule = schedules.first().toUiModel(),
+                            workPeriod = schedules.first().toUiModel().workPeriod[SessionType.MORNING]?.first()
+                        )
+                    }
+                }
+        }
+        viewModelScope.launch {
+
             appointRepository.suggestions.collect { suggestions ->
                 _uiState.update {
                     it.copy(locationSuggestions = suggestions)
                 }
             }
-            appointRepository.workingDays.collect{days ->
-                Log.d("mama", "working days $days" )
-                _uiState.update {
-                    it.copy(days = days, appointDate = days.first())
-                }
-            }
 
-            appointRepository.workingPeriods.collect{periods ->
-                Log.d("mama", "working period $periods" )
-                val morning = periods["Morning"] ?: emptyList()
-                val afternoon = periods["Afternoon"] ?: emptyList()
-                _uiState.update {
-                    it.copy(morningPeriods = morning, afternoonPeriods = afternoon, appointPeriod = morning.first())
-                }
-            }
         }
     }
 
@@ -55,15 +61,50 @@ class BookingViewModel @Inject constructor(private val appointRepository: Appoin
         }
     }
 
-    fun updateAppointDate(appointDate: AppointDate){
+    fun updateAppointDate(appointDate: WorkDayUi){
         _uiState.update {
-            it.copy(appointDate = appointDate)
+            it.copy(schedule = appointDate, workPeriod = appointDate.workPeriod[SessionType.MORNING]?.first())
         }
     }
-    fun updateAppointPeriod(period: Period){
+    fun updateAppointPeriod(period: WorkPeriod){
         _uiState.update {
-            it.copy(appointPeriod = period)
+            it.copy(workPeriod = period)
         }
+    }
+
+    fun onAdditionalInfoChange(text: String){
+        _uiState.update {
+            it.copy(additionalInfo = text)
+        }
+    }
+
+    fun updateCategory(category: Category){
+        _uiState.update {
+            it.copy(category = category)
+        }
+    }
+
+    fun book(callback: (Boolean) -> Unit){
+        val start = _uiState.value.workPeriod?.start ?: return
+        val end = _uiState.value.workPeriod?.end ?: return
+        val description = _uiState.value.additionalInfo
+        viewModelScope.launch {
+            scheduleRepository.book(BookingRequest(
+                start.toString(),
+                end.toString(),
+                description
+            ))
+                .catch {
+                    Log.d("mama", "failed to book ${it.message}")
+                    callback(false)
+                }
+                .collect{
+                    callback(true)
+                    Log.d("mama", "booking successful $it")
+                }
+        }
+
+
     }
 
 }

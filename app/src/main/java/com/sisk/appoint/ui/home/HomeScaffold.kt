@@ -14,6 +14,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.sisk.appoint.model.Category
 import com.sisk.appoint.model.User
 import com.sisk.appoint.navigation.HomeNavGraph
 import com.sisk.appoint.navigation.bottomBarScreens
@@ -28,7 +29,7 @@ fun HomeScaffold(
     viewHomeModel: HomeViewModel = hiltViewModel(),
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     onNavigate: () -> Unit = {},
-    navigateToBooking: () -> Unit = {},
+    navigateToBooking: (Category) -> Unit = {},
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
         rememberTopAppBarState()
@@ -91,7 +92,9 @@ fun HomeScaffold(
             HomeNavGraph(
                 navHostController = navHostController,
                 modifier = Modifier.padding(innerPadding),
-                navigateToBooking = navigateToBooking
+                navigateToBooking = {
+                    navigateToBooking(it)
+                }
             )
         }
     }

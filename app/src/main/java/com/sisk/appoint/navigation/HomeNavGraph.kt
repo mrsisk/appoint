@@ -5,11 +5,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.sisk.appoint.model.Category
 import com.sisk.appoint.ui.account.AccountScreen
 import com.sisk.appoint.ui.home.HomeScreen
 
 @Composable
-fun HomeNavGraph(navHostController: NavHostController, modifier: Modifier, navigateToBooking: ()-> Unit = {}){
+fun HomeNavGraph(navHostController: NavHostController, modifier: Modifier, navigateToBooking: (Category)-> Unit = {}){
     NavHost(
         navController = navHostController,
         route = Graph.HOME,
@@ -20,7 +21,7 @@ fun HomeNavGraph(navHostController: NavHostController, modifier: Modifier, navig
 
 
             HomeScreen(onCategorySelected = {
-                navigateToBooking()
+                navigateToBooking(it)
             })
 
         }

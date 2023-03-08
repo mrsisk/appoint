@@ -44,38 +44,29 @@ fun DateTimeScreen(
                 )
             }
             item {
-                DatePicker(state.days, selectedAppointDate = state.appointDate){
+                DatePicker(state.schedules, selectedAppointDate = state.schedule){
                     viewModel.updateAppointDate(it)
                 }
             }
 
-
-        item {
+        state.schedule.workPeriod.forEach {entrySet->
+                    item {
             TimeComponent(
-                heading = "Morning",
-                periods = state.morningPeriods,
-                selectedPeriod = state.appointPeriod,
+                heading = entrySet.key.name,
+                periods = entrySet.value,
+                selectedPeriod = state.workPeriod,
                 onTimeClick = {
                     viewModel.updateAppointPeriod(it)
                 }
             )
         }
-
-        item {
-            TimeComponent(
-                heading = "Afternoon",
-                periods = state.afternoonPeriods,
-                selectedPeriod = state.appointPeriod,
-                onTimeClick = {
-                    viewModel.updateAppointPeriod(it)
-                }
-            )
         }
+
 
 
         item {
                 Text(
-                    text = "Additional information (optional) ${state.location.name}",
+                    text = "Additional information (optional)",
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)
                 )
@@ -88,9 +79,9 @@ fun DateTimeScreen(
                         .height(100.dp),
                     singleLine = false,
                     maxLines = 4,
-                    value = text,
+                    value = state.additionalInfo,
                     onValueChange = {
-                                    text = it
+                                    viewModel.onAdditionalInfoChange(it)
                     },
 
                 )

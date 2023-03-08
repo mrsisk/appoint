@@ -9,15 +9,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.sisk.appoint.model.Period
+import com.sisk.appoint.model.WorkPeriod
 import com.sisk.appoint.ui.components.Header
 
 
 @Composable
 fun TimeComponent(
     heading: String = "Morning",
-    periods: List<Period> = emptyList(),
-    selectedPeriod: Period = Period(),
-    onTimeClick: (Period)-> Unit = {}
+    periods: List<WorkPeriod> = emptyList(),
+    selectedPeriod: WorkPeriod? = WorkPeriod(),
+    onTimeClick: (WorkPeriod)-> Unit = {}
 ) {
     Column {
         Header(title = heading)

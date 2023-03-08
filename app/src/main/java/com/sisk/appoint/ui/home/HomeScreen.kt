@@ -15,12 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.sisk.appoint.model.Category
 import com.sisk.appoint.ui.components.*
 
 
 @Composable
 fun HomeScreen(
-    onCategorySelected: (String) -> Unit = {},
+    onCategorySelected: (Category) -> Unit = {},
     viewHomeModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewHomeModel.uiState.collectAsState()

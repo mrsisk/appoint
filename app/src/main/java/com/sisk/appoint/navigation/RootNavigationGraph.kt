@@ -1,9 +1,13 @@
 package com.sisk.appoint.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.sisk.appoint.model.Category
 import com.sisk.appoint.ui.auth.ProfileRegistrationScreen
 import com.sisk.appoint.ui.booking.BookingScaffold
 import com.sisk.appoint.ui.home.HomeScaffold
@@ -35,12 +39,21 @@ fun RootNavigationGraph(
                 }
             },
             navigateToBooking = {
-                navHostController.navigate(Graph.BOOKING)
+                navHostController.navigate("${Graph.BOOKING}/${it.name}")
             })
         }
 
-        composable(route = Graph.BOOKING){
-            BookingScaffold()
+        composable(
+            route = "${Graph.BOOKING}/{category}",
+            arguments = listOf(navArgument("category") { type = NavType.StringType })
+        ){backStackEntry ->
+            val category = backStackEntry.arguments?.getString("category")
+
+            BookingScaffold(category = Category.valueOf(category ?: "GENERIC")){
+                navHostController.navigate(Graph.HOME){
+                    popUpTo(Graph.BOOKING){inclusive = true}
+                }
+            }
         }
         composable(route = AppointDestinations.ProfileRegistration.route){
             ProfileRegistrationScreen{

@@ -10,9 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sisk.appoint.model.AppointDate
+import com.sisk.appoint.model.WorkDayUi
 
 @Composable
-fun DatePicker(days: List<AppointDate>, selectedAppointDate: AppointDate, onDateSelected: (AppointDate) -> Unit) {
+fun DatePicker(days: List<WorkDayUi>, selectedAppointDate: WorkDayUi?, onDateSelected: (WorkDayUi) -> Unit) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 10.dp).fillMaxWidth()

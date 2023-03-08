@@ -16,14 +16,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sisk.appoint.R
 import com.sisk.appoint.model.Category
+import com.sisk.appoint.model.CategoryUi
 
 @Composable
-fun CategoryCard(category: Category, onClick: (String) -> Unit = {}) {
+fun CategoryCard(categoryUi: CategoryUi, onClick: (Category) -> Unit = {}) {
     Card(
         modifier = Modifier
             .size(height = 150.dp, width = 120.dp)
             .clickable {
-                onClick(category.title)
+                onClick(categoryUi.id)
             }
     ) {
         Column(
@@ -36,13 +37,13 @@ fun CategoryCard(category: Category, onClick: (String) -> Unit = {}) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = category.image),
+                painter = painterResource(id = categoryUi.image),
                 contentDescription = "",
                 modifier = Modifier.size(80.dp),
                 contentScale = ContentScale.Fit
             )
             Text(
-                text = category.title,
+                text = categoryUi.title,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -54,5 +55,5 @@ fun CategoryCard(category: Category, onClick: (String) -> Unit = {}) {
 @Preview
 @Composable
 fun CategoryCardPreview() {
-    CategoryCard(Category(title = "Specialist", image = R.drawable.heart))
+    CategoryCard(CategoryUi(title = "Specialist", image = R.drawable.heart))
 }

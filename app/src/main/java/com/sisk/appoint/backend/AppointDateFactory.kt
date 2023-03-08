@@ -28,7 +28,7 @@ class AppointDateFactory(zoneId: ZoneId) {
     }
 }
 
-fun LocalDate.toAppointDate(formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY")): AppointDate{
+fun LocalDate.toAppointDate(formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")): AppointDate{
     val dayOfWeek = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
     val fullDate = format(formatter)
     val day = dayOfMonth

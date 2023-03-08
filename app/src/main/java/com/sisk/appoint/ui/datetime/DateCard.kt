@@ -15,10 +15,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sisk.appoint.model.AppointDate
+import com.sisk.appoint.model.WorkDayUi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateCard(selected: Boolean, appointDate: AppointDate, onDateClick: (AppointDate) -> Unit) {
+fun DateCard(selected: Boolean, appointDate: WorkDayUi, onDateClick: (WorkDayUi) -> Unit) {
     Surface(
         shape = RoundedCornerShape(8.dp),
         onClick = {

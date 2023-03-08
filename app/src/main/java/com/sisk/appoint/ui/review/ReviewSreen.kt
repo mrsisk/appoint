@@ -3,14 +3,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sisk.appoint.ui.components.ToolBar
+import com.sisk.appoint.ui.viewmodel.BookingViewModel
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReviewScreen() {
+fun ReviewScreen(viewModel: BookingViewModel = hiltViewModel(), onComplete: ()-> Unit = {}) {
+
+    val state by viewModel.uiState.collectAsState()
 
     Scaffold {paddingValues ->
         Column(
@@ -40,7 +47,7 @@ fun ReviewScreen() {
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "Mbabane government hospital",
+                            text = state.location.name,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
                         )
@@ -53,7 +60,7 @@ fun ReviewScreen() {
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "3 Jun 2008 11:05",
+                            text = state.workPeriod?.start?.format(DateTimeFormatter.RFC_1123_DATE_TIME) ?: "",
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
                         )
@@ -66,7 +73,7 @@ fun ReviewScreen() {
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "iam having issues with abc",
+                            text = state.additionalInfo,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
                         )
@@ -75,7 +82,13 @@ fun ReviewScreen() {
             }
             Button(modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 12.dp),onClick = { /*TODO*/ }) {
+                .padding(horizontal = 8.dp, vertical = 12.dp),onClick = {
+                    viewModel.book {
+                        if (it){
+                            onComplete()
+                        }
+                    }
+            }) {
                 Text(text = "Book")
             }
         }

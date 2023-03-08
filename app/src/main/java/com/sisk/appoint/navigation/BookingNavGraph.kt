@@ -7,21 +7,31 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.sisk.appoint.model.Category
 import com.sisk.appoint.ui.datetime.DateTimeScreen
 import com.sisk.appoint.ui.location.LocationScreen
 import com.sisk.appoint.ui.review.ReviewScreen
 import com.sisk.appoint.ui.viewmodel.BookingViewModel
 
 @Composable
-fun BookingNavGraph(navHostController: NavHostController) {
+fun BookingNavGraph(
+    navHostController: NavHostController,
+    category: Category = Category.GENERIC,
+    onComplete: () -> Unit = {}
+) {
 
-    NavHost(navController = navHostController, startDestination = AppointDestinations.Location.route, route = Graph.BOOKING ){
+    NavHost(
+        navController = navHostController,
+        startDestination = AppointDestinations.Location.route,
+        route = Graph.BOOKING
+    ){
         composable(route = AppointDestinations.Location.route){ navBackStackEntry ->
             val parentEntry = remember(navBackStackEntry) {
                 navHostController.getBackStackEntry(AppointDestinations.Location.route)
             }
 
             val viewModel = hiltViewModel<BookingViewModel>(parentEntry)
+            viewModel.updateCategory(category)
             LocationScreen(
                 viewModel = viewModel,
                 onNavBack = {
@@ -50,13 +60,13 @@ fun BookingNavGraph(navHostController: NavHostController) {
             )
         }
 
-        composable(route = AppointDestinations.Review.route){navBackStackEntry ->
+        composable(route = AppointDestinations.Review.route) { navBackStackEntry ->
             val parentEntry = remember(navBackStackEntry) {
                 navHostController.getBackStackEntry(AppointDestinations.Location.route)
             }
 
             val viewModel = hiltViewModel<BookingViewModel>(parentEntry)
-            ReviewScreen()
+            ReviewScreen(viewModel = viewModel, onComplete = onComplete)
         }
     }
 }

@@ -7,6 +7,7 @@ import com.sisk.appoint.R
 import com.sisk.appoint.data.AppointRepository
 import com.sisk.appoint.data.UserRepository
 import com.sisk.appoint.model.Category
+import com.sisk.appoint.model.CategoryUi
 import com.sisk.appoint.model.Info
 import com.sisk.appoint.utils.UnAuthorizedException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -64,12 +65,12 @@ class HomeViewModel @Inject constructor(
         )
         connect()
     }
-    private fun categories(): List<Category>{
+    private fun categories(): List<CategoryUi>{
         return listOf(
-            Category(title = "Heart specialist", image = R.drawable.heart),
-            Category(title = "Dentist", image = R.drawable.tooth),
-            Category(title = "Eyes specialist", image = R.drawable.eye),
-            Category(title = "Maternity",image = R.drawable.heart)
+            CategoryUi(title = "Heart specialist", image = R.drawable.heart, id = Category.HEART),
+            CategoryUi(title = "Dentist", image = R.drawable.tooth, id = Category.DENTIST),
+            CategoryUi(title = "Eyes specialist", image = R.drawable.eye, id = Category.EYES),
+            CategoryUi(title = "Maternity",image = R.drawable.heart, id = Category.MATERNITY)
         )
     }
 

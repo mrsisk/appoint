@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonSerializer
 import com.sisk.appoint.data.AuthRepository
 import com.sisk.appoint.data.TokenRepository
 import com.sisk.appoint.network.*
@@ -16,7 +19,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.Retrofit.Builder
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -45,11 +52,24 @@ object NetworkModule {
         .Builder()
         .build()
 
+    private val localTimeDeserializer = JsonDeserializer { json, _, _ ->
+        ZonedDateTime.parse(json?.asJsonPrimitive?.asString)
+    }
+
+
+    private val localDateDeserializer = JsonDeserializer { json, _, _ ->
+        LocalDate.parse(json?.asJsonPrimitive?.asString, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+    }
+
+    private val gson  = GsonBuilder()
+        .registerTypeAdapter(ZonedDateTime::class.java, localTimeDeserializer)
+        .registerTypeAdapter(LocalDate::class.java, localDateDeserializer)
+        .create()
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit.Builder = Retrofit.Builder()
             .baseUrl("http://192.168.1.6:8081/api/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
 
     @Provides
     @Singleton
@@ -57,6 +77,13 @@ object NetworkModule {
         .client(client)
         .build()
         .create(AppointMainApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideScheduleApi(retrofit: Builder,@MainInterceptor client: OkHttpClient): ScheduleApi = retrofit
+        .client(client)
+        .build()
+        .create(ScheduleApi::class.java)
     @Provides
     @Singleton
     fun provideUserApi(retrofit: Builder,@MainInterceptor client: OkHttpClient): UserApi = retrofit

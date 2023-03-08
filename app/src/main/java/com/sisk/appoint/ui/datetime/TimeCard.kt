@@ -12,13 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sisk.appoint.model.Period
+import com.sisk.appoint.model.WorkPeriod
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimeCard(
     selected: Boolean = false,
-    period: Period = Period(),
-    onTimeClick: (Period) -> Unit = {}
+    period: WorkPeriod = WorkPeriod(),
+    formatter: DateTimeFormatter =  DateTimeFormatter.ofPattern("HH:mm"),
+    onTimeClick: (WorkPeriod) -> Unit = {}
 ) {
     Surface(
         shape = RoundedCornerShape(6.dp),
@@ -38,7 +41,7 @@ fun TimeCard(
 
 
         ) {
-            Text(text = period.start)
+            Text(text = period.start.format(formatter))
         }
     }
 }

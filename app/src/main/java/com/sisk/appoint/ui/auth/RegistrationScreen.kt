@@ -50,6 +50,7 @@ fun RegistrationScreen(
         )
         {
 
+
             Column(modifier = Modifier.padding(vertical = 24.dp)) {
                 Text(text = "Let's create an account", style = MaterialTheme.typography.displaySmall)
                 Text(
