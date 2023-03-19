@@ -23,6 +23,7 @@ class ScheduleRepository @Inject constructor(private val scheduleApi: ScheduleAp
     suspend fun book(request: BookingRequest): Flow<Booking> = flow {
         val response = scheduleApi.book(request)
 
+
         if (response.isSuccessful){
             emit(response.body() ?: throw Exception("Empty booking body"))
         }else{

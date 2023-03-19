@@ -27,7 +27,6 @@ class LogInViewModel @Inject constructor(
 
     val channel = Channel<String>(Channel.CONFLATED)
 
-
     fun authenticate(callBack: (Boolean)-> Unit){
         _authState.update {
             it.copy(loading = true)
@@ -55,8 +54,7 @@ class LogInViewModel @Inject constructor(
 
 
     private suspend fun onAuthenticationSuccess(result: LogInResponse) {
-        tokenRepository.saveToken(result.token)
-        tokenRepository.saveRefreshToken(result.refresh_token)
+        tokenRepository.saveToken(result.access_token)
         _authState.update { it.copy(loading = false) }
 
     }

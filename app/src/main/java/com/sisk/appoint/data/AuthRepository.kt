@@ -1,5 +1,6 @@
 package com.sisk.appoint.data
 
+import android.util.Log
 import com.google.gson.Gson
 import com.sisk.appoint.model.AuthRequest
 import com.sisk.appoint.model.GenericError
@@ -53,6 +54,15 @@ class AuthRepository @Inject constructor(private val authApi: AppointAuthApi) {
         }catch (e: Exception){
             //handle error
             emit(AppointResponse.Error(GenericError("Unknown error occurred")))
+        }
+
+    }
+
+    suspend fun test(){
+        try {
+            authApi.test()
+        }catch (ex: Exception){
+            Log.d("mama", "test ex ${ex.message}")
         }
 
     }

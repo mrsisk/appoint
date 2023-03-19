@@ -18,6 +18,7 @@ class UserRepository @Inject constructor(private val userApi: UserApi) {
         if (response.isSuccessful){
             emit(response.body())
         }else{
+            Log.d("mama", "use repo ${response.code()} ${response.errorBody()}")
             if (response.code() == HTTP_UNAUTHORIZED) throw UnAuthorizedException("Authorization required")
             else throw Exception("failed to get userinfo error occurred")
         }

@@ -24,6 +24,7 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
 
 
     init {
+
         connect()
     }
 

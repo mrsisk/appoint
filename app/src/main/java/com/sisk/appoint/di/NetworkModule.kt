@@ -37,20 +37,28 @@ object NetworkModule {
     @Provides
     fun provideMainHttpClient(
         appointInterceptor: AppointInterceptor,
-        appointAuthenticator: AppointAuthenticator
+        appointAuthenticator: AppointAuthenticator,
+        cookieJar: AppointCookieJar
     ): OkHttpClient = OkHttpClient
         .Builder()
         .addInterceptor(appointInterceptor)
         .authenticator(appointAuthenticator)
         .followRedirects(false)
         .followSslRedirects(false)
+        .cookieJar(cookieJar)
         .build()
 
     @AuthInterceptor
     @Provides
-    fun provideAuthHttpClient(): OkHttpClient = OkHttpClient
+    @Singleton
+    fun provideAuthHttpClient(cookieJar: AppointCookieJar): OkHttpClient = OkHttpClient
         .Builder()
+        .cookieJar(cookieJar)
         .build()
+
+    @Provides
+    @Singleton
+    fun provideCookieJar(tokenRepository: TokenRepository): AppointCookieJar = AppointCookieJar(tokenRepository)
 
     private val localTimeDeserializer = JsonDeserializer { json, _, _ ->
         ZonedDateTime.parse(json?.asJsonPrimitive?.asString)
@@ -68,7 +76,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit.Builder = Retrofit.Builder()
-            .baseUrl("http://192.168.1.6:8081/api/v1/")
+            .baseUrl("http://192.168.1.3:8081/api/v1/")
             .addConverterFactory(GsonConverterFactory.create(gson))
 
     @Provides
@@ -99,7 +107,7 @@ object NetworkModule {
         .create(AppointAuthApi::class.java)
     @Provides
     @Singleton
-    fun provideTokenManager(@ApplicationContext context: Context, authApi: AppointAuthApi): TokenRepository = TokenRepository(context,authApi)
+    fun provideTokenManager(@ApplicationContext context: Context): TokenRepository = TokenRepository(context)
 
     @Provides
     @Singleton

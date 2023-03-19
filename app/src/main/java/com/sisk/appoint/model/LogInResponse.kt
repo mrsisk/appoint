@@ -1,3 +1,3 @@
 package com.sisk.appoint.model
 
-data class LogInResponse(val token: String, val refresh_token: String)
+data class LogInResponse(val access_token: String)
