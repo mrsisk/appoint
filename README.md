@@ -1,5 +1,7 @@
 ## APPOINT
 APPOINT is an application that can be used by organizations or individuals to allow their clients to book an appointment for several services that are offered. This application can be used for different types of businesses, in this project i used a medical institution as an examplele. This medical institution offer several services such as dental services, laboratory services etc. 
+### Services
+Application depends on [Appoint services](https://github.com/mrsisk/appoint-services). Ensure all appoint services are up and running before running this application. All appoint services combined provide services such as user registration, authentication, scheduling etc.
 
 ## Demo
 ### Registration
