@@ -1,6 +1,6 @@
 package com.sisk.appoint.ui.viewmodel
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sisk.appoint.data.UserRepository
@@ -22,13 +22,13 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
     val authState = _authState.map(AuthViewModelState::toAuthState)
         .stateIn(viewModelScope, SharingStarted.Eagerly, _authState.value.toAuthState())
 
-
     init {
 
         connect()
     }
 
     private fun connect(){
+
         _authState.update {
             it.copy(isLoading = true)
         }
@@ -36,7 +36,7 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
 
             userRepository.userinfo()
                 .catch { error ->
-                    Log.d("mama", "auth viemodel errro ${error.message}")
+
                     when(error){
                         is SocketTimeoutException -> {
                             _authState.update {

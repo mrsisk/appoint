@@ -1,6 +1,5 @@
 package com.sisk.appoint.ui.auth
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -66,6 +65,29 @@ fun RegistrationScreen(
                 verticalArrangement = Arrangement.Center
 
             ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    value = state.firstName ?: "",
+                    onValueChange = {
+                        viewModel.onFirstNameChange(it)
+                    },
+                    placeholder = { Text(text = "Name") },
+                    enabled = !state.loading
+                )
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    value = state.lastName ?: "",
+                    onValueChange = {
+                        viewModel.onLastNameChange(it)
+                    },
+                    placeholder = { Text(text = "Surname") },
+                    enabled = !state.loading
+                )
 
                 OutlinedTextField(
                     modifier = Modifier
@@ -109,7 +131,6 @@ fun RegistrationScreen(
                     onClick = {
 
                         viewModel.register{
-                            Log.d("mama", "navigate $it")
                             if(it){
                                 navigate()
                             }

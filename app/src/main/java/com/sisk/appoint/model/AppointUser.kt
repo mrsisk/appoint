@@ -1,10 +1,13 @@
 package com.sisk.appoint.model
 
 data class AppointUser(
-    val email: String,
-    val createdAt: String,
-    val roles: Set<Role>,
-    val profile: Profile? = null
+    val sub: String = "",
+    val emailVerified: Boolean = false,
+    val name: String? = null,
+    val preferred_username: String? = null ,
+    val given_name: String? = null,
+    val family_name: String? = null,
+    val email:String = "guest@mail.com"
 )
 
 

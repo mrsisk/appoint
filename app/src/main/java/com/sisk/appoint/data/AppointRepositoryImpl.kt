@@ -1,6 +1,5 @@
 package com.sisk.appoint.data
 
-import android.util.Log
 import com.sisk.appoint.backend.*
 import com.sisk.appoint.model.AppointDate
 import com.sisk.appoint.model.Location
@@ -28,20 +27,6 @@ class AppointRepositoryImpl @Inject constructor(private val appointMainApi: Appo
             emit(period)
         }
 
-    override suspend fun test() {
-        try {
-           val res =  appointMainApi.getData()
-            if (res.isSuccessful){
-                Log.d("mama", "result ar ${res.body()}")
-            }else{
-                Log.d("mama", "result error ${res.errorBody()} ${res.code()}")
-            }
-
-        }catch (ex: Exception){
-            Log.d("mama", ex.message ?: "Exception in api call")
-        }
-
-    }
 
     override suspend fun findLocation(query: String): List<Location> {
         return withContext(Dispatchers.IO){

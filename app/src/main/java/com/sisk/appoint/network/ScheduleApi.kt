@@ -9,7 +9,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ScheduleApi {
-
     @GET("schedule/days")
     suspend fun dateTime(): Response<List<WorkDay>>
 

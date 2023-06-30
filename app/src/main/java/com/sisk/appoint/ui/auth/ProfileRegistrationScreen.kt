@@ -1,6 +1,6 @@
 package com.sisk.appoint.ui.auth
 
-import android.util.Log
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions

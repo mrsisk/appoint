@@ -3,8 +3,8 @@ package com.sisk.appoint.ui.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sisk.appoint.data.AuthRepository
-import com.sisk.appoint.model.AuthRequest
-import com.sisk.appoint.model.RegistrationError
+import com.sisk.appoint.model.GenericError
+import com.sisk.appoint.model.RegistrationRequest
 import com.sisk.appoint.network.AppointResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -15,11 +15,10 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(private val authRepository: AuthRepository): ViewModel() {
 
-    private val _authState = MutableStateFlow(AuthenticationState(authenticationMode = AuthenticationMode.SIGN_UP))
-    val authState: StateFlow<AuthenticationState> = _authState.asStateFlow()
+    private val _authState = MutableStateFlow(RegistrationState())
+    val authState: StateFlow<RegistrationState> = _authState.asStateFlow()
 
     val channel = Channel<String>(Channel.Factory.CONFLATED)
-
 
    fun register(callBack: (Boolean)-> Unit){
         _authState.update {
@@ -27,9 +26,16 @@ class RegistrationViewModel @Inject constructor(private val authRepository: Auth
         }
        val email = _authState.value.email ?: return
        val password = _authState.value.password ?: return
+       val firstName  = _authState.value.firstName ?: return
+       val lastName= _authState.value.lastName ?: return
       viewModelScope.launch {
 
-          val result = authRepository.register(AuthRequest(email = email.trim(), password = password))
+          val result = authRepository.register(RegistrationRequest(
+              email = email,
+              password = password,
+              firstName = firstName,
+              lastName = lastName
+          ))
           result.collect{response ->
               when(response){
                   is AppointResponse.Error -> {
@@ -54,12 +60,11 @@ class RegistrationViewModel @Inject constructor(private val authRepository: Auth
 
     }
 
-    private fun onRegistrationFailure(response: RegistrationError){
-        if (response.email != null){
-            channel.trySend(response.email)
-        }
-        if (response.password != null){
-            channel.trySend(response.password)
+    private fun onRegistrationFailure(response: GenericError){
+        if (response.message != null){
+            channel.trySend(response.message)
+        }else{
+            channel.trySend("Registration error occurred")
         }
 
         _authState.update { it.copy(loading = false) }
@@ -74,6 +79,18 @@ class RegistrationViewModel @Inject constructor(private val authRepository: Auth
     fun onPasswordChange(password: String){
         _authState.update {
             it.copy(password = password)
+        }
+    }
+
+    fun onFirstNameChange(name: String){
+        _authState.update {
+            it.copy(firstName = name)
+        }
+    }
+
+    fun onLastNameChange(lastName: String){
+        _authState.update {
+            it.copy(lastName = lastName)
         }
     }
 

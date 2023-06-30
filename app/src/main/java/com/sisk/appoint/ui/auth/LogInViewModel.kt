@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sisk.appoint.data.AuthRepository
 import com.sisk.appoint.data.TokenRepository
+import com.sisk.appoint.model.AuthError
 import com.sisk.appoint.model.AuthRequest
-import com.sisk.appoint.model.GenericError
 import com.sisk.appoint.model.LogInResponse
 import com.sisk.appoint.network.AppointResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,9 +59,9 @@ class LogInViewModel @Inject constructor(
 
     }
 
-    private fun onLoginFailure(error: GenericError?){
+    private fun onLoginFailure(error: AuthError?){
         if (error != null){
-            channel.trySend(error.message ?: "Failed to login")
+            channel.trySend(error.error_description ?: "Failed to login")
         }
         _authState.update { it.copy(loading = false) }
     }

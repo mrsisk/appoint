@@ -1,6 +1,5 @@
 package com.sisk.appoint.data
 
-import android.util.Log
 import com.sisk.appoint.model.Booking
 import com.sisk.appoint.model.BookingRequest
 import com.sisk.appoint.model.WorkDay

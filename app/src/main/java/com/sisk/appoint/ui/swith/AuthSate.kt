@@ -6,8 +6,6 @@ sealed interface AuthState{
 
     val isLoading: Boolean
 
-    data class NoProfile(override val isLoading: Boolean): AuthState
-
     data class NotAuthenticated(override val isLoading: Boolean): AuthState
 
     data class Authenticated(val user: AppointUser, override val isLoading: Boolean): AuthState
@@ -27,7 +25,6 @@ data class AuthViewModelState(
 
         if (user == null) return AuthState.NotAuthenticated(isLoading = isLoading)
 
-        if (user.profile == null) return AuthState.NoProfile(isLoading = isLoading)
 
         return AuthState.Authenticated(user, isLoading = isLoading)
     }

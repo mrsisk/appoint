@@ -11,14 +11,17 @@ import kotlinx.coroutines.flow.flow
 import okhttp3.internal.http.HTTP_UNAUTHORIZED
 import javax.inject.Inject
 
+const val USER_REPO_TAG  = "UserRepository"
 class UserRepository @Inject constructor(private val userApi: UserApi) {
 
     suspend fun userinfo(): Flow<AppointUser?> = flow {
+
         val response = userApi.userinfo()
+
         if (response.isSuccessful){
             emit(response.body())
         }else{
-            Log.d("mama", "use repo ${response.code()} ${response.errorBody()}")
+            Log.d(USER_REPO_TAG, "${response.code()} ${response.errorBody()}")
             if (response.code() == HTTP_UNAUTHORIZED) throw UnAuthorizedException("Authorization required")
             else throw Exception("failed to get userinfo error occurred")
         }

@@ -28,7 +28,7 @@ import javax.inject.Qualifier
 import javax.inject.Singleton
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
+const val API_BASE_URL = "http://192.168.1.5:8888/"
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -76,7 +76,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit.Builder = Retrofit.Builder()
-            .baseUrl("http://192.168.1.3:8081/api/v1/")
+            .baseUrl(API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
 
     @Provides

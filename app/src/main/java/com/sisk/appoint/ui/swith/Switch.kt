@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sisk.appoint.navigation.AppointDestinations
 import com.sisk.appoint.navigation.Graph
 import com.sisk.appoint.ui.components.ErrorScreen
 import com.sisk.appoint.ui.components.LoadingScreen
@@ -26,12 +25,7 @@ fun Switch(
                 if (!authState.isLoading) onNavigate(Graph.HOME)
             }
         }
-        is AuthState.NoProfile -> {
-            if (authState.isLoading) LoadingScreen()
-            LaunchedEffect(key1 = authState){
-                if (!authState.isLoading) onNavigate(AppointDestinations.ProfileRegistration.route)
-            }
-        }
+
         is AuthState.NotAuthenticated -> {
             if (authState.isLoading) LoadingScreen()
             LaunchedEffect(key1 = authState){

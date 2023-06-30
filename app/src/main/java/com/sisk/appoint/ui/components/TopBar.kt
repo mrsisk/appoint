@@ -16,12 +16,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sisk.appoint.R
+import com.sisk.appoint.model.AppointUser
 import com.sisk.appoint.model.User
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    user: User,
+    user: AppointUser?,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 ) {
     TopAppBar(title = {
@@ -37,7 +38,7 @@ fun TopBar(
                 contentDescription = ""
             )
             Text(
-                text = user.username,
+                text = user?.email ?: "Guest",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.wrapContentSize(unbounded = true).padding(horizontal = 8.dp)
             )
@@ -62,5 +63,5 @@ fun TopBar(
 @Preview(showBackground = true)
 @Composable
 fun TopBarPreview() {
-    TopBar(User(username = "John", email = "sisk@gmail.com", image = "") )
+    TopBar(AppointUser() )
 }

@@ -22,6 +22,7 @@ import com.sisk.appoint.ui.components.BottomNav
 import com.sisk.appoint.ui.components.LoadingScreen
 import com.sisk.appoint.ui.components.TopBar
 
+const val TAG  = "HomeScaffold"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScaffold(
@@ -39,18 +40,20 @@ fun HomeScaffold(
     val state by viewHomeModel.uiState.collectAsState()
 
 
+
+
     DisposableEffect(key1 = lifecycleOwner){
         val observer = LifecycleEventObserver{_, event ->
             when(event){
-                Lifecycle.Event.ON_CREATE -> Log.d("mama s", "onCreate")
-                Lifecycle.Event.ON_START -> Log.d("mama s", "onStart")
+                Lifecycle.Event.ON_CREATE -> Log.d(TAG, "onCreate")
+                Lifecycle.Event.ON_START -> Log.d(TAG, "onStart")
                 Lifecycle.Event.ON_RESUME ->{
                  viewHomeModel.checkAuth()
                 }
-                Lifecycle.Event.ON_PAUSE -> Log.d("mama s", "onPause")
-                Lifecycle.Event.ON_STOP -> Log.d("mama s", "onStop")
-                Lifecycle.Event.ON_DESTROY -> Log.d("mama s", "onDestroy")
-                Lifecycle.Event.ON_ANY -> Log.d("mama s", "ANY")
+                Lifecycle.Event.ON_PAUSE -> Log.d(TAG, "onPause")
+                Lifecycle.Event.ON_STOP -> Log.d(TAG, "onStop")
+                Lifecycle.Event.ON_DESTROY -> Log.d(TAG, "onDestroy")
+                Lifecycle.Event.ON_ANY -> Log.d(TAG, "ANY")
             }
 
         }
@@ -72,7 +75,7 @@ fun HomeScaffold(
                     })
                 } else {
                     Log.d(
-                        "mama",
+                        TAG,
                         "current is $currentDestination in ${bottomBarScreens.map { it.route }}"
                     )
                 }
@@ -80,11 +83,7 @@ fun HomeScaffold(
             topBar = {
                // if (currentDestination == "home") {
                     TopBar(
-                        user = User(
-                            username = "John Sisk",
-                            email = "sisk@gmail.com",
-                            image = ""
-                        ), scrollBehavior = scrollBehavior
+                        user = state.user, scrollBehavior = scrollBehavior
                     )
                // }
             }

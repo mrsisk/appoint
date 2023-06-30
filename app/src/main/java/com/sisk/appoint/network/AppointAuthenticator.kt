@@ -1,6 +1,5 @@
 package com.sisk.appoint.network
 
-import android.util.Log
 import com.sisk.appoint.data.TokenRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -21,7 +20,9 @@ class AppointAuthenticator @Inject constructor(private val tokenRepository: Toke
         } ?: return null
 
         val newAccessToken = runBlocking {
+
             val res = appointAuthApi.refresh()
+
             if (res.isSuccessful){
                 val token = res.body()
                 if (token == null){
@@ -35,10 +36,12 @@ class AppointAuthenticator @Inject constructor(private val tokenRepository: Toke
             }
         } ?: return null
 
-        return response.request
+        return  response.request
             .newBuilder()
             .header("Authorization", "Bearer $newAccessToken")
             .build()
+
+
 
     }
 

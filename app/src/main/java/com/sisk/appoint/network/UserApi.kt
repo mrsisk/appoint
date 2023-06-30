@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface UserApi {
 
-    @GET("userinfo")
+    @GET("/auth/userinfo")
     suspend fun userinfo(): Response<AppointUser>
 
     @POST("profile")
