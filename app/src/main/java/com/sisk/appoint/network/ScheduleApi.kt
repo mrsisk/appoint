@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ScheduleApi {
-    @GET("schedule/days")
+    @GET("api/v1/schedule/days")
     suspend fun dateTime(): Response<List<WorkDay>>
 
     @POST("booking")

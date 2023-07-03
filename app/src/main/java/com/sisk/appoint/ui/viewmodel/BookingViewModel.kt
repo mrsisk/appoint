@@ -23,24 +23,8 @@ class BookingViewModel @Inject constructor(
     val uiState: StateFlow<BookingUiState> = _uiState.asStateFlow()
 
     init {
+        load()
         viewModelScope.launch {
-            scheduleRepository.getSchedule()
-                .catch {
-                    Log.d("mama", "booking repo ${it.message}")
-                }
-                .collect{schedules ->
-                    Log.d("mama", "booking repo got $schedules")
-                    _uiState.update {
-                        it.copy(
-                            schedules = schedules.map { wd -> wd.toUiModel() },
-                            schedule = schedules.first().toUiModel(),
-                            workPeriod = schedules.first().toUiModel().workPeriod[SessionType.MORNING]?.first()
-                        )
-                    }
-                }
-        }
-        viewModelScope.launch {
-
             appointRepository.suggestions.collect { suggestions ->
                 _uiState.update {
                     it.copy(locationSuggestions = suggestions)
@@ -50,6 +34,31 @@ class BookingViewModel @Inject constructor(
         }
     }
 
+    fun load(){
+        viewModelScope.launch {
+            _uiState.update {state ->
+                state.copy(loading = true)
+            }
+            scheduleRepository.getSchedule()
+                .catch {
+                    _uiState.update {state ->
+                        state.copy(hasError = true, loading = false, error = it.message ?: "Failed to load schedule")
+                    }
+                }
+                .collect{schedules ->
+
+                    _uiState.update {
+                        it.copy(
+                            schedules = schedules.map { wd -> wd.toUiModel() },
+                            schedule = schedules.first().toUiModel(),
+                            workPeriod = schedules.first().toUiModel().workPeriod[SessionType.MORNING]?.first(),
+                            loading = false,
+                            hasError = false
+                        )
+                    }
+                }
+        }
+    }
     suspend fun searchLocation(query: String): List<Location>{
        return appointRepository.findLocation(query)
     }

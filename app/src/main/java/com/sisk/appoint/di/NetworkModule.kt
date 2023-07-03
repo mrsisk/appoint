@@ -28,7 +28,7 @@ import javax.inject.Qualifier
 import javax.inject.Singleton
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-const val API_BASE_URL = "http://192.168.1.5:8888/"
+const val API_BASE_URL = "http://192.168.1.3:8888/"
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {

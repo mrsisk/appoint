@@ -9,5 +9,8 @@ data class BookingUiState(
     val schedule: WorkDayUi = WorkDayUi(),
     val workPeriod: WorkPeriod? = WorkPeriod(),
     val additionalInfo: String = "",
-    val category: Category = Category.GENERIC
+    val category: Category = Category.GENERIC,
+    val loading: Boolean = false,
+    val hasError: Boolean = false,
+    val error: String? = null
 )

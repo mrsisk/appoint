@@ -27,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sisk.appoint.R
+import com.sisk.appoint.ui.components.ErrorScreen
+import com.sisk.appoint.ui.components.LoadingScreen
 import com.sisk.appoint.ui.viewmodel.BookingViewModel
 import com.sisk.appoint.ui.components.LocationSearch
 import com.sisk.appoint.ui.components.ToolBar
@@ -57,128 +59,142 @@ fun LocationScreen(
         }
     }
 
-
-
-    BottomSheetScaffold(
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
-        scaffoldState = bottomSheetScaffoldState,
-        sheetElevation = 10.dp,
-        sheetPeekHeight = (-56).dp,
-        sheetShape = RoundedCornerShape(
-            bottomStart = 0.dp,
-            bottomEnd = 0.dp,
-            topStart = 20.dp,
-            topEnd = 20.dp
-        ),
-        sheetContent = {
-
-            LocationSearch(
-                height = height,
-                onBackPressed = {
-                    coroutineScope.launch {
-                        sheetState.collapse()
-                    }
-                },
-                focusRequester = focusRequester,
-                onLocationSelected = {
-                    viewModel.updateLocation(it)
-                    coroutineScope.launch {
-                        sheetState.collapse()
-                    }
-                },
-                findLocation = {
-                    viewModel.searchLocation(it)
-                },
-                searchBarState = rememberSearchBarState(
-                    suggestions = state.locationSuggestions
-                )
-            )
+    if(state.loading) LoadingScreen()
+    else if (state.hasError){
+        ErrorScreen(message = state.error ?: "Unknown error"){
+            viewModel.load()
         }
-    ) {
-        LazyColumn(modifier = Modifier
-            .statusBarsPadding()
-            .fillMaxSize()
-        ){
-            item {
-                ToolBar(
-                    title = "Location",
-                    stage = "1/3",
-                    onNavBack = onNavBack
+    }else {
+
+        BottomSheetScaffold(
+            backgroundColor = MaterialTheme.colorScheme.surface,
+            sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+            scaffoldState = bottomSheetScaffoldState,
+            sheetElevation = 10.dp,
+            sheetPeekHeight = (-56).dp,
+            sheetShape = RoundedCornerShape(
+                bottomStart = 0.dp,
+                bottomEnd = 0.dp,
+                topStart = 20.dp,
+                topEnd = 20.dp
+            ),
+            sheetContent = {
+
+                LocationSearch(
+                    height = height,
+                    onBackPressed = {
+                        coroutineScope.launch {
+                            sheetState.collapse()
+                        }
+                    },
+                    focusRequester = focusRequester,
+                    onLocationSelected = {
+                        viewModel.updateLocation(it)
+                        coroutineScope.launch {
+                            sheetState.collapse()
+                        }
+                    },
+                    findLocation = {
+                        viewModel.searchLocation(it)
+                    },
+                    searchBarState = rememberSearchBarState(
+                        suggestions = state.locationSuggestions
+                    )
                 )
             }
-
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(278.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.locate),
-                        contentDescription = "",
-                        modifier = Modifier.size(278.dp),
-                        contentScale = ContentScale.Fit
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .fillMaxSize()
+            ) {
+                item {
+                    ToolBar(
+                        title = "Location",
+                        stage = "1/3",
+                        onNavBack = onNavBack
                     )
                 }
-            }
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-            }
 
-            item {
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)) {
-
+                item {
                     Spacer(modifier = Modifier.height(8.dp))
-                    // Text(text = "Step 1", style = MaterialTheme.typography.titleMedium)
-                    Text(buildAnnotatedString {
-                        append("Are you going to ")
-                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)){
-                            append(state.location.name)
-                        }
-                        append("?")
-                    }, style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center)
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),onClick = {
-                    navigateToDateTime()
-                }) {
-                    Text(text = "Yes")
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedButton(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),onClick = {
-                    coroutineScope.launch {
-                        sheetState.expand()
-                        focusRequester.requestFocus()
+
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(278.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.locate),
+                            contentDescription = "",
+                            modifier = Modifier.size(278.dp),
+                            contentScale = ContentScale.Fit
+                        )
                     }
-                }) {
-                    Text(text = "No")
                 }
-                Spacer(modifier = Modifier
-                    .height(8.dp)
-                    .padding(horizontal = 8.dp))
-                Text(
-                    text = "Please note suggested location is auto-detected based on current your location",
-                    style = MaterialTheme.typography.labelMedium,
-                    textAlign = TextAlign.Center
-                )
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        // Text(text = "Step 1", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            buildAnnotatedString {
+                                append("Are you going to ")
+                                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                    append(state.location.name)
+                                }
+                                append("?")
+                            },
+                            style = MaterialTheme.typography.headlineLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp), onClick = {
+                        navigateToDateTime()
+                    }) {
+                        Text(text = "Yes")
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedButton(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp), onClick = {
+                        coroutineScope.launch {
+                            sheetState.expand()
+                            focusRequester.requestFocus()
+                        }
+                    }) {
+                        Text(text = "No")
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .height(8.dp)
+                            .padding(horizontal = 8.dp)
+                    )
+                    Text(
+                        text = "Please note suggested location is auto-detected based on current your location",
+                        style = MaterialTheme.typography.labelMedium,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+
             }
-
-
         }
     }
-
 
 }
 

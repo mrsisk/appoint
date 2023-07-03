@@ -76,7 +76,7 @@ class HomeViewModel @Inject constructor(
 
     fun test(){
         viewModelScope.launch {
-            appointRepository.test()
+
         }
 
     }
